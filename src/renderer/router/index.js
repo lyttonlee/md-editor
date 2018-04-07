@@ -22,7 +22,13 @@ export default new Router({
         {
           path: '/home/lists',
           component: require('@/views/pages/lists').default,
-          name: '文章列表'
+          name: '文章列表',
+          children: [
+            {
+              path: '/home/lists/:id',
+              component: require('@/views/pages/content').default
+            }
+          ]
         },
         {
           path: '/home/new',

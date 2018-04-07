@@ -7,13 +7,15 @@
     <mavon-editor 
     ref="md"
     class="md"
-    @imgAdd="$imgAdd" 
-    @imgDel="$imgDel" 
+    @imgAdd="$imgAdd"
+    placeholder="开始写文章"
+    @imgDel="$imgDel"
     v-model="info"></mavon-editor>
+    <el-button :disabled="disabled" type="danger" @click="SaveArticle">保 存 文 章</el-button>
   </div>
 </template>
 <script>
-// import qn from '../../qiniu/qiniu'
+import QN from '../../qiniu/qiniu'
 export default {
   // ..
   data () {
@@ -22,24 +24,69 @@ export default {
       info: ''
     }
   },
+  computed: {
+    disabled () {
+      if (this.title === '' || this.info === '') {
+        return true
+      } else {
+        return false
+      }
+    }
+  },
   methods: {
     // mavoneditor图片上传到七牛云并替换地址
     // 绑定@imgAdd event
     $imgAdd (pos, $file) {
-      // 1、获取七牛云上传凭证token
-      // 第一步.将图片上传到服务器.
-      let formdata = new FormData()
-      formdata.append('file', $file)
-      // UploadFile(formdata)
-      // .then(url => {
-      //   // console.log(url)
-      //   // console.log(this.addprod.info)
-      //   // 第二步.将返回的url替换到文本原位置![...](./0) -> ![...](url)
-      //   this.$refs.md.$img2Url(pos, url.data)
-      // })
+      // 1-1、获取七牛云参数
+      this.$db.findOne({hasoption: {$exists: true}}, (err, doc) => {
+        console.log(doc, err)
+        let {ak, sk, domain, scope, position} = doc.option
+        // console.log(ak, sk, position)
+        // 1-2、生成七牛云上传Token
+        const myqn = new QN(ak, sk, scope, domain)
+        const Token = myqn.upToken(7200)
+        // console.log(Token)
+        // 1-3、上传文件到七牛云
+        const config = {
+          headers: {'Content-Type': 'multipart/form-data'}
+        }
+        const time = this.$moment(new Date()).format('YYYY-MM-DD')
+        const keyname = scope + '-' + time + '-' + $file.name
+        // console.log(keyname)
+        // console.log(time)
+        // console.log($file)
+        let formdata = new FormData()
+        formdata.append('file', $file)
+        formdata.append('token', Token)
+        formdata.append('key', keyname)
+        // 上传文件
+        this.$http.post(position, formdata, config).then(res => {
+          // console.log(res)
+          // 上传成功后替换图片地址
+          const newUrl = 'http://' + domain + '/' + res.data.key
+          // console.log(newUrl)
+          this.$refs.md.$img2Url(pos, newUrl)
+        }).catch(err => {
+          console.log(err)
+        })
+      })
     },
     $imgDel (pos) {
       delete this.img_file[pos]
+    },
+    // 保存文章
+    SaveArticle () {
+      console.log(this.info, this.titile)
+      let par = {
+        meta: 'article',
+        title: this.title,
+        content: this.info,
+        time: this.$moment(new Date()).format('YYYY-MM-DD:HH-mm')
+      }
+      this.$db.insert(par, (err, ret) => {
+        console.log(ret, err)
+        this.$router.push('/home/lists')
+      })
     }
   }
 }

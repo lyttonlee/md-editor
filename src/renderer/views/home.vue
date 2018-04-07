@@ -33,6 +33,7 @@ export default {
   methods: {
     toset () {
       // 从本地数据库中读出七牛云配置
+      // this.$store.dispatch('qnoption')
       this.$db.findOne({hasoption: {$exists: true}}, (err, doc) => {
         if (err) {
           console.log(err + '出错误了！')
@@ -45,6 +46,12 @@ export default {
           }
         }
       })
+      // if (this.qnoption) {
+      //   console.log(this.qnoption.qnoption)
+      //   this.$router.push('/home')
+      // } else {
+      //   this.$router.push('/option')
+      // }
     }
   }
 }
