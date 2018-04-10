@@ -61,13 +61,17 @@ export default {
         formdata.append('key', keyname)
         // 上传文件
         this.$http.post(position, formdata, config).then(res => {
-          // console.log(res)
+          console.log(res)
           // 上传成功后替换图片地址
           const newUrl = 'http://' + domain + '/' + res.data.key
           // console.log(newUrl)
           this.$refs.md.$img2Url(pos, newUrl)
         }).catch(err => {
           console.log(err)
+          this.$message({
+            type: 'error',
+            message: '上传失败，请确定网络连接或确认你的七牛云配置!'
+          })
         })
       })
     },

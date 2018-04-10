@@ -18,6 +18,9 @@
       <el-menu-item key="/" index="/">
         使用协议
       </el-menu-item>
+      <el-menu-item key="/option" index="/option">
+        七牛云配置
+      </el-menu-item>
     </el-menu>
   </div>
 </template>

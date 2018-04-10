@@ -71,6 +71,10 @@ export default {
           this.$refs.md.$img2Url(pos, newUrl)
         }).catch(err => {
           console.log(err)
+          this.$message({
+            type: 'error',
+            message: '上传失败，请确定网络连接或确认你的七牛云配置!'
+          })
         })
       })
     },

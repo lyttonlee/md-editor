@@ -38,7 +38,11 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="success" @click="submitqn">确认并提交</el-button>
+        <el-button v-if="nooption" type="success" @click="submitqn">确认并提交</el-button>
+        <template v-if="hasoption">
+          <el-button type="success" @click="editqn">修改七牛云配置</el-button>
+          <el-button  type="danger" @click="deleteqn">删除七牛云配置</el-button>
+        </template>
       </el-form-item>
     </el-form>
   </div>
@@ -47,7 +51,10 @@
 export default {
   data () {
     return {
-      option: '七牛云设置',
+      option: '七牛云配置',
+      nooption: true,
+      hasoption: false,
+      oldqnoption: '',
       qnconfig: {
         ak: '',
         sk: '',
@@ -112,7 +119,93 @@ export default {
           console.log('err')
         }
       })
+    },
+    editqn () {
+      let updateqnoption = {
+        hasoption: true,
+        option: {
+          ak: this.qnconfig.ak,
+          sk: this.qnconfig.sk,
+          scope: this.qnconfig.scope,
+          domain: this.qnconfig.domain,
+          position: this.qnconfig.position
+        }
+      }
+      let query = {
+        _id: this.oldqnoption._id
+      }
+      this.$db.update(query, updateqnoption, {}, (err, numReplaced) => {
+        // console.log(numReplaced, err)
+        if (err) {
+          this.$message({
+            type: 'error',
+            message: '内部错误！获取数据失败'
+          })
+        } else {
+          this.$message({
+            type: 'success',
+            message: '修改七牛云配置成功!'
+          })
+          this.$router.push('/home/lists')
+        }
+      })
+    },
+    deleteqn () {
+      console.log('delete')
+      this.$confirm('此操作将永久删除该七牛云配置, 是否确定删除?', '请确定你正在进行的操作!', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        // let query = {
+        //   _id: this.oldqnoption._id
+        // }
+        this.$db.remove({'_id': this.oldqnoption._id}, {}, (err, numRemoved) => {
+          console.log(err, numRemoved)
+          if (err) {
+            this.$message({
+              type: 'error',
+              message: '删除失败!请稍后再试'
+            })
+          } else {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            this.$router.push('/')
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    getqnoption () {
+      this.$db.findOne({hasoption: {$exists: true}}, (err, doc) => {
+        if (err) {
+          console.log(err + '出错误了！')
+        } else {
+          console.log(doc)
+          if (doc) {
+            // this.$router.push('/home')
+            this.nooption = false
+            this.hasoption = true
+            this.oldqnoption = doc
+            this.qnconfig.ak = doc.option.ak
+            this.qnconfig.sk = doc.option.sk
+            this.qnconfig.domain = doc.option.domain
+            this.qnconfig.scope = doc.option.scope
+            this.qnconfig.position = doc.option.position
+          }
+        }
+      })
     }
+  },
+  mounted () {
+    this.getqnoption()
   }
 }
 </script>
@@ -125,6 +218,7 @@ export default {
     }
     .el-button {
       width: 100%;
+      margin: 20px 0 ;
     }
   }
 }

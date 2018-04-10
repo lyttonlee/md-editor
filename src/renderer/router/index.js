@@ -12,6 +12,7 @@ export default new Router({
     },
     {
       path: '/option',
+      name: '七牛云配置',
       component: require('@/views/option').default
     },
     {
