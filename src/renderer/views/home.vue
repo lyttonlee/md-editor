@@ -16,7 +16,7 @@
     <li>本软件使用的是nedb本地数据库,所有信息均是保存在本地的,所以请不要担心你辛苦写的文章会事先泄露(本软件唯一需要网络支持的地方在于上传图片到七牛云服务器)
     </li>
     <h3>五.最后我也厚颜无耻一下</h3>
-    <img src="../../../build/icons/256x256.png" alt="">
+    <img src="../assets/zfb.jpg" alt="">
     <h4>如果你用了本软件感觉的确对你有帮助,不知我是否能厚颜无耻求个打赏,金额随意!</h4>
     <el-button type="primary" @click="toset">确 定</el-button>
   </div>
