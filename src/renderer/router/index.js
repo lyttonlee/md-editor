@@ -39,13 +39,12 @@ export default new Router({
           path: '/home/md',
           component: require('@/views/pages/md').default,
           name: 'MarkDown语法'
-        },
-        {
-          path: '/home/docs',
-          component: require('@/views/pages/docs').default,
-          name: '帮助文档'
         }
       ]
+    },
+    {
+      path: '/edit/:id',
+      component: require('@/views/edit').default
     },
     {
       path: '*',

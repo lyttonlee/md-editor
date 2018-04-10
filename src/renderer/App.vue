@@ -15,7 +15,7 @@
   width: 100%;
   max-width: 1920px;
   margin: 0 auto;
-  font-size: 12px;
+  font-size: 13px;
   text-align: center;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
 }

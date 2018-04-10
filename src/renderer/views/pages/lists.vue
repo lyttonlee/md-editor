@@ -2,9 +2,9 @@
   <div class="section">
     <el-row class="con">
       <el-col class="left" :span="8">
-        <h1>Article Lists</h1>
+        <h1>文章列表</h1>
         <router-link  v-for="doc in lists" :key="doc._id" :to="'/home/lists/' + doc._id">
-          <div class="tit">
+          <div class="tit" :class="{active: active === doc._id}" @click="click(doc._id)" >
             <h3>{{doc.title}}</h3>
             <p>{{doc.time}}</p>
           </div>
@@ -21,7 +21,8 @@ export default {
   // ..
   data () {
     return {
-      lists: []
+      lists: [],
+      active: ''
     }
   },
   computed: {
@@ -40,9 +41,13 @@ export default {
           })
         } else {
           this.lists = docs
-          console.log(this.lists)
+          // console.log(this.lists)
         }
       })
+    },
+    click (id) {
+      this.active = id
+      // console.log(this.active)
     }
   },
   mounted () {
@@ -63,7 +68,7 @@ a {
       position: fixed;
       left: 0;
       top: 60px;
-      bottom: 100px;
+      bottom: 0;
       .tit {
         border-bottom: 1px solid @background;
         padding: 5px 0 0 0;
@@ -73,6 +78,10 @@ a {
           background: @background-half;
           color: #000;
         }
+      }
+      .active {
+        background: @background-half;
+        color: #000;
       }
     }
     // .right {
