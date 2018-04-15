@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "author": "lyttonlee <lzr3278@163.com>",
   "description": "个人markdown文章编辑器",
-  "license": null,
+  "license": "mit",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",

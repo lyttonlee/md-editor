@@ -6,7 +6,15 @@
 
 <script>
   export default {
-    name: 'md-editor'
+    name: 'md-editor',
+    mounted () {
+      window.addEventListener('drop', event => {
+        console.log(event)
+        if (event.target.className === 'md') {
+          event.preventDefault()
+        }
+      }, false)
+    }
   }
 </script>
 
