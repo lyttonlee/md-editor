@@ -47,14 +47,16 @@ export default {
         // console.log(ak, sk, position)
         // 1-2、生成七牛云上传Token
         const myqn = new QN(ak, sk, scope, domain)
-        const Token = myqn.upToken(7200)
+        const Token = myqn.upToken(18000)
         // console.log(Token)
         // 1-3、上传文件到七牛云
         const config = {
           headers: {'Content-Type': 'multipart/form-data'}
         }
-        const time = this.$moment(new Date()).format('YYYY-MM-DD')
-        const keyname = scope + '-' + time + '-' + $file.name
+        const time = this.$moment(new Date()).format('YYYY/MM/DD-HH:MM:SS')
+        const typeIndex = $file.name.lastIndexOf('.')
+        const filetype = $file.name.substring(typeIndex)
+        const keyname = time + '-' + scope + '-' + Math.floor(Math.random() * 100) + filetype
         // console.log(keyname)
         // console.log(time)
         // console.log($file)
