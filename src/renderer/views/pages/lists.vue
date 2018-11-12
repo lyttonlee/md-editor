@@ -1,7 +1,7 @@
 <template>
   <div class="section">
     <el-row class="con">
-      <el-col class="left" :span="8">
+      <el-col class="left" :span="6">
         <h1>文章列表</h1>
         <router-link  v-for="doc in lists" :key="doc._id" :to="'/home/lists/' + doc._id">
           <div class="tit" :class="{active: active === doc._id}" @click="click(doc._id)" >
@@ -10,8 +10,8 @@
           </div>
         </router-link>
       </el-col>
-      <el-col class="right" :offset="8" :span="16">
-        <router-view :key="random"></router-view>
+      <el-col class="right" :offset="6" :span="18">
+        <router-view :key="random" />
       </el-col>
     </el-row>
   </div>

@@ -95,6 +95,7 @@ export default {
 <style lang="less" scoped>
 // ..
 .article {
+  margin-bottom: 20px;
   .md {
     z-index: 1;
   }

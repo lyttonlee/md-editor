@@ -88,10 +88,10 @@ export default {
           let qnoption = {
             hasoption: true,
             option: {
-              ak: this.qnconfig.ak,
-              sk: this.qnconfig.sk,
-              scope: this.qnconfig.scope,
-              domain: this.qnconfig.domain,
+              ak: this.qnconfig.ak.trim(),
+              sk: this.qnconfig.sk.trim(),
+              scope: this.qnconfig.scope.trim(),
+              domain: this.qnconfig.domain.trim(),
               position: this.qnconfig.position
             }
           }
@@ -124,10 +124,10 @@ export default {
       let updateqnoption = {
         hasoption: true,
         option: {
-          ak: this.qnconfig.ak,
-          sk: this.qnconfig.sk,
-          scope: this.qnconfig.scope,
-          domain: this.qnconfig.domain,
+          ak: this.qnconfig.ak.trim(),
+          sk: this.qnconfig.sk.trim(),
+          scope: this.qnconfig.scope.trim(),
+          domain: this.qnconfig.domain.trim(),
           position: this.qnconfig.position
         }
       }

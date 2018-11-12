@@ -39,9 +39,10 @@ export default {
     $imgAdd (pos, $file) {
       // 1-1、获取七牛云参数
       this.$db.findOne({hasoption: {$exists: true}}, (err, doc) => {
-        console.log(doc, err)
-        let {ak, sk, domain, scope, position} = doc.option
-        console.log(ak, sk, position)
+        // console.log(doc, err)
+        if (err) return
+        const {ak, sk, domain, scope, position} = doc.option
+        // console.log(ak, sk, position)
         // 1-2、生成七牛云上传Token
         const myqn = new QN(ak, sk, scope, domain)
         const Token = myqn.upToken(18000)
@@ -66,8 +67,9 @@ export default {
         this.$http.post(position, formdata, config).then(res => {
           console.log(res)
           // 上传成功后替换图片地址
-          const newUrl = 'http://' + domain + '/' + res.data.key
-          // console.log(newUrl)
+          // const newUrl = 'http://' + domain + '/' + res.data.key
+          const newUrl = `http://${domain}/${res.data.key}`
+          console.log(newUrl)
           this.$refs.md.$img2Url(pos, newUrl)
         }).catch(err => {
           console.log(err)
